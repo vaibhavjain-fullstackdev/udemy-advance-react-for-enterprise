@@ -14,12 +14,14 @@
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-sass-guidelines": "^7.0.0",
-    "stylelint-prettier": "^1.1.2"
+    "stylelint-prettier": "^1.1.2",
+    "nodemon": "^2.0.4"
   },
   "scripts": {
     "lint": "stylelint './**/*.scss'",
     "lint:fix": "yarn lint --fix",
-    "build": "node src/scripts/build.js"
+    "build": "node src/scripts/build.js",
+    "dev": "nodemon --watch src --exec yarn build -e scss"
   },
   "husky": {
     "hooks": {
