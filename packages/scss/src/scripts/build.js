@@ -1,48 +1,44 @@
-const fs = require('fs');
-const path = require('path');
-const sass = require('node-sass');
+const Fs = require('fs')
+const Path = require('path')
+const Sass = require('node-sass')
 
 const getComponents = () => {
-    let allComponents = [];
-    
-    const types = ['atoms', 'molecules', 'organisms'];
+    let allComponents = []
 
-    types.forEach( (type) => {
-        const allFiles = fs.readdirSync(`src/${type}`).map(file => ({
+    const types = ['atoms', 'molecules', 'organisms']
+
+    types.forEach(type => {
+        const allFiles = Fs.readdirSync(`src/${type}`).map(file => ({
             input: `src/${type}/${file}`,
             output: `src/lib/${file.slice(0, -4) + 'css'}`
-        }));
+        }))
 
         allComponents = [
             ...allComponents,
             ...allFiles
         ]
-    });
+    })
 
-    return allComponents;
+    return allComponents
 }
 
-const compile = (filePath, fileName) => {
-
-    const result = sass.renderSync({
-        data: fs.readFileSync(
-            path.resolve(filePath)
+const compile = (path, fileName) => {
+    const result = Sass.renderSync({
+        data: Fs.readFileSync(
+            Path.resolve(path)
         ).toString(),
         outputStyle: 'expanded',
-        outFile: 'global.css',
-        includePaths: [path.resolve('src')]
+        includePaths: [Path.resolve('src')]
     })
-    
-    fs.writeFileSync(
-        path.resolve(fileName),
-        result.css.toString()
-    )
 
+    Fs.writeFileSync(
+        Path.resolve(fileName),
+        result.css.toString()
+    )    
 }
 
-compile('src/global.scss', 'src/lib/global.css');
+compile('src/global.scss', 'src/lib/global.css')
 
 getComponents().forEach(component => {
-    compile(component.input, component.output);
+    compile(component.input, component.output)
 })
-
